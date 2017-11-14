@@ -3,7 +3,10 @@ package com.reactlibrary;
 
 import android.os.Environment;
 import android.os.StatFs;
-import android.content.ComponentCallbacks2;
+import android.content.ComponentCallbacks;
+import android.content.res.Configuration;
+import android.app.ActivityManager;
+import android.content.Context;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -15,7 +18,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import java.io.File;
 
-public class RNVitalsModule extends ReactContextBaseJavaModule implements ComponentCallbacks2 {
+public class RNVitalsModule extends ReactContextBaseJavaModule implements ComponentCallbacks {
 
   public static final String MODULE_NAME = "RNVitals";
   public static final String LOW_MEMORY = "LOW_MEMORY";
@@ -37,6 +40,11 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
         .emit(LOW_MEMORY, true);
     }
+  }
+
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    // no-op
   }
 
   @ReactMethod
@@ -64,14 +72,13 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
 
   @ReactMethod
   public void getMemory(Promise promise) {
-    Runtime runtime = Runtime.getRuntime();
-
-    long usedMemInMB=(runtime.totalMemory() - runtime.freeMemory()) / 1048576L;
-    long maxHeapSizeInMB=runtime.maxMemory() / 1048576L;
+    ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+    ActivityManager activityManager = (ActivityManager) getReactApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+    activityManager.getMemoryInfo(mi);
 
     WritableMap info = Arguments.createMap();
-    info.putDouble("totalMemory", (double)maxHeapSizeInMB);
-    info.putDouble("freeMemory", (double)usedMemInMB);
+    info.putDouble("totalMemory", (double)mi.totalMem);
+    info.putDouble("freeMemory", (double)mi.availMem);
     promise.resolve(info);
   }
 }
