@@ -3,19 +3,23 @@ package com.reactlibrary;
 
 import android.os.Environment;
 import android.os.StatFs;
+import android.content.ComponentCallbacks2;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
+import com.sun.xml.internal.ws.api.Component;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import java.io.File;
 
-public class RNVitalsModule extends ReactContextBaseJavaModule {
+public class RNVitalsModule extends ReactContextBaseJavaModule implements ComponentCallbacks2 {
 
   public static final String MODULE_NAME = "RNVitals";
+  public static final String LOW_MEMORY = "LOW_MEMORY";
 
   public RNVitalsModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -24,6 +28,16 @@ public class RNVitalsModule extends ReactContextBaseJavaModule {
   @Override
   public String getName() {
     return MODULE_NAME;
+  }
+
+  @Override
+  public void onLowMemory() {
+    ReactApplicationContext thisContext = getReactApplicationContext();
+    if (thisContext.hasActiveCatalystInstance()) {
+      thisContext
+        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        .emit(LOW_MEMORY, true);
+    }
   }
 
   @ReactMethod
