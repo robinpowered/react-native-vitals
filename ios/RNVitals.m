@@ -29,7 +29,7 @@ static NSString * const LOW_MEMORY = @"LOW_MEMORY";
 - (instancetype)init
 {
     if ((self = [super init])) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidReceiveMemoryWarning:) name:@"UIApplicationDidReceiveMemoryWarningNotification" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     }
 
     return self;
