@@ -11,7 +11,7 @@ export default {
   ...RNVitals,
   addListener (callback) {
     return DeviceEventEmitter.addListener(
-      MobileDeviceManager.LOW_MEMORY,
+      RNVitals.LOW_MEMORY,
       callback
     );
   }

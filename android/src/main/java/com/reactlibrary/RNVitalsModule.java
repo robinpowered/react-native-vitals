@@ -33,6 +33,13 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
   }
 
   @Override
+  public @Nullable Map<String, Object> getConstants() {
+    HashMap<String, Object> constants = new HashMap<String, Object>();
+    constants.put("LOW_MEMORY", LOW_MEMORY);
+    return constants;
+  }
+
+  @Override
   public void onLowMemory() {
     ReactApplicationContext thisContext = getReactApplicationContext();
     if (thisContext.hasActiveCatalystInstance()) {

@@ -3,9 +3,56 @@
 #import <mach/mach.h>
 #import <mach/mach_host.h>
 
+// Used to send events to JS
+#if __has_include(<React/RCTBridge.h>)
+#import <React/RCTBridge.h>
+#elif __has_include("RCTBridge.h")
+#import "RCTBridge.h"
+#else
+#import "React/RCTBridge.h"
+#endif
+
+#if __has_include(<React/RCTEventDispatcher.h>)
+#import <React/RCTEventDispatcher.h>
+#elif __has_include("RCTEventDispatcher.h")
+#import "RCTEventDispatcher.h"
+#else
+#import "React/RCTEventDispatcher.h"
+#endif
+
 @implementation RNVitals
 
+@synthesize bridge = _bridge;
+
+static NSString * const LOW_MEMORY = @"LOW_MEMORY";
+
+- (instancetype)init
+{
+    if ((self = [super init])) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidReceiveMemoryWarning:) name:@"UIApplicationDidReceiveMemoryWarningNotification" object:nil];
+    }
+
+    return self;
+
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)applicationDidReceiveMemoryWarning:(NSNotification *)notification
+{
+    [_bridge.eventDispatcher sendDeviceEventWithName:LOW_MEMORY
+                                                body:@YES];
+}
+
 RCT_EXPORT_MODULE()
+
+- (NSDictionary *)constantsToExport
+{
+    return @{ @"LOW_MEMORY": LOW_MEMORY };
+}
 
 RCT_EXPORT_METHOD(getStorage:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -48,13 +95,9 @@ RCT_EXPORT_METHOD(getMemory:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
   }
 
   /* Stats in bytes */
-  natural_t mem_used = (vm_stat.active_count +
-                        vm_stat.inactive_count +
-                        vm_stat.wire_count) * pagesize;
   natural_t mem_free = vm_stat.free_count * pagesize;
-  natural_t mem_total = mem_used + mem_free;
   resolve(@{
-            @"totalMemory": [NSNumber numberWithUnsignedLongLong:mem_total],
+            @"totalMemory": [NSNumber numberWithUnsignedLongLong:[NSProcessInfo processInfo].physicalMemory],
             @"freeMemory": [NSNumber numberWithUnsignedLongLong:mem_free]
             });
 }
