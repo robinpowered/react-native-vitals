@@ -49,6 +49,26 @@ RCT_EXPORT_MODULE()
     return @{ @"LOW_MEMORY": LOW_MEMORY };
 }
 
+- (NSDictionary *)getMemoryInfo
+{
+    struct mach_task_basic_info info;
+    mach_msg_type_number_t size = sizeof(info);
+    kern_return_t kerr = task_info(mach_task_self(),
+                                   MACH_TASK_BASIC_INFO,
+                                   (task_info_t)&info,
+                                   &size);
+
+    if (kerr != KERN_SUCCESS) {
+        return @{"failed": "failure"};
+    }
+
+    return @{
+      @"total": [NSNumber numberWithUnsignedLongLong:[NSProcessInfo processInfo].physicalMemory],
+      @"used": [NSNumber numberWithUnsignedLongLong:info.resident_size],
+      @"free": [NSNumber numberWithUnsignedLongLong:info.virtual_size]
+    };
+}
+
 RCT_EXPORT_METHOD(getStorage:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     unsigned long long totalSpace = 0;
@@ -76,22 +96,16 @@ RCT_EXPORT_METHOD(getStorage:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromis
 
 RCT_EXPORT_METHOD(getMemory:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-    struct mach_task_basic_info info;
-    mach_msg_type_number_t size = sizeof(info);
-    kern_return_t kerr = task_info(mach_task_self(),
-                                   MACH_TASK_BASIC_INFO,
-                                   (task_info_t)&info,
-                                   &size);
-
-    if (kerr != KERN_SUCCESS) {
-        reject(@"not-support", @"An error happened", nil);
+    NSDictionary memoryInfo = [RNVitals getMemoryInfo];
+    if ([memoryInfo objectForKey:@"failed"] != nil)
+    {
+      resolve(memoryInfo);
+    }
+    else
+    {
+      reject(@"not-support", @"An error happened", nil);
     }
 
-    resolve(@{
-              @"total": [NSNumber numberWithUnsignedLongLong:[NSProcessInfo processInfo].physicalMemory],
-              @"used": [NSNumber numberWithUnsignedLongLong:info.resident_size],
-              @"free": [NSNumber numberWithUnsignedLongLong:info.virtual_size]
-              });
 }
 
 @end

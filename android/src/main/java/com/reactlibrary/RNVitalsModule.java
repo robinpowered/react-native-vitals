@@ -39,13 +39,25 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
     return constants;
   }
 
+  public WritableMap getMemoryInfo() {
+    ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+    ActivityManager activityManager = (ActivityManager) getReactApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+    activityManager.getMemoryInfo(mi);
+
+    WritableMap info = Arguments.createMap();
+    info.putDouble("total", (double)mi.totalMem);
+    info.putDouble("free", (double)mi.availMem);
+    info.putDouble("used", (double) mi.totalMem - mi.availMem);
+    return info;
+  }
+
   @Override
   public void onLowMemory() {
     ReactApplicationContext thisContext = getReactApplicationContext();
     if (thisContext.hasActiveCatalystInstance()) {
       thisContext
         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-        .emit(LOW_MEMORY, true);
+        .emit(LOW_MEMORY, getMemoryInfo());
     }
   }
 
@@ -80,14 +92,6 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
 
   @ReactMethod
   public void getMemory(Promise promise) {
-    ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
-    ActivityManager activityManager = (ActivityManager) getReactApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
-    activityManager.getMemoryInfo(mi);
-
-    WritableMap info = Arguments.createMap();
-    info.putDouble("total", (double)mi.totalMem);
-    info.putDouble("free", (double)mi.availMem);
-    info.putDouble("used", (double) mi.totalMem - mi.availMem);
-    promise.resolve(info);
+    promise.resolve(getMemoryInfo());
   }
 }
