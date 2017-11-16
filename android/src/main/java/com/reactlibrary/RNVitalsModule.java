@@ -86,6 +86,7 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
     WritableMap info = Arguments.createMap();
     info.putDouble("totalMemory", (double)mi.totalMem);
     info.putDouble("freeMemory", (double)mi.availMem);
+    info.putDouble("usedMemory", (double) mi.totalMem - mi.availMem);
     promise.resolve(info);
   }
 }
