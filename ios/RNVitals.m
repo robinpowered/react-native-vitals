@@ -99,11 +99,11 @@ RCT_EXPORT_METHOD(getMemory:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
     NSDictionary memoryInfo = [RNVitals getMemoryInfo];
     if ([memoryInfo objectForKey:@"failed"] != nil)
     {
-      resolve(memoryInfo);
+      reject(@"not-support", @"An error happened", nil);
     }
     else
     {
-      reject(@"not-support", @"An error happened", nil);
+      resolve(memoryInfo);
     }
 
 }
