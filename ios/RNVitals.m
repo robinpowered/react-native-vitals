@@ -6,17 +6,12 @@
 // Used to send events to JS
 #if __has_include(<React/RCTBridge.h>)
 #import <React/RCTBridge.h>
+#import <React/RCTEventDispatcher.h>
 #elif __has_include("RCTBridge.h")
 #import "RCTBridge.h"
-#else
-#import "React/RCTBridge.h"
-#endif
-
-#if __has_include(<React/RCTEventDispatcher.h>)
-#import <React/RCTEventDispatcher.h>
-#elif __has_include("RCTEventDispatcher.h")
 #import "RCTEventDispatcher.h"
 #else
+#import "React/RCTBridge.h"
 #import "React/RCTEventDispatcher.h"
 #endif
 
@@ -68,10 +63,11 @@ RCT_EXPORT_METHOD(getStorage:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromis
         NSNumber *freeFileSystemSizeInBytes = [dictionary objectForKey:NSFileSystemFreeSize];
         totalSpace = [fileSystemSizeInBytes unsignedLongLongValue];
         totalFreeSpace = [freeFileSystemSizeInBytes unsignedLongLongValue];
-
+        unsigned long long used = totalFreeSpace - totalSpace;
         resolve(@{
-                  @"totalSpace": [NSNumber numberWithUnsignedLongLong:totalSpace],
-                  @"freeSpace": [NSNumber numberWithUnsignedLongLong:totalFreeSpace]
+                  @"total": [NSNumber numberWithUnsignedLongLong:totalSpace],
+                  @"free": [NSNumber numberWithUnsignedLongLong:totalFreeSpace],
+                  @"used": [NSNumber numberWithUnsignedLongLong:used]
                   });
     } else {
         reject(@"not-support", @"An error happened", nil);
@@ -92,9 +88,9 @@ RCT_EXPORT_METHOD(getMemory:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
     }
 
     resolve(@{
-              @"totalMemory": [NSNumber numberWithUnsignedLongLong:[NSProcessInfo processInfo].physicalMemory],
-              @"usedMemory": [NSNumber numberWithUnsignedLongLong:info.resident_size],
-              @"freeMemory": [NSNumber numberWithUnsignedLongLong:info.virtual_size]
+              @"total": [NSNumber numberWithUnsignedLongLong:[NSProcessInfo processInfo].physicalMemory],
+              @"used": [NSNumber numberWithUnsignedLongLong:info.resident_size],
+              @"free": [NSNumber numberWithUnsignedLongLong:info.virtual_size]
               });
 }
 

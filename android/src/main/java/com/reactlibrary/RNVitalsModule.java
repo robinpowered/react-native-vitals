@@ -72,8 +72,9 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
     }
 
     WritableMap info = Arguments.createMap();
-    info.putDouble("totalSpace", (double)totalSpace);
-    info.putDouble("freeSpace", (double)freeSpace);
+    info.putDouble("total", (double)totalSpace);
+    info.putDouble("free", (double)freeSpace);
+    info.putDouble("used", (double)totalSpace - freeSpace);
     promise.resolve(info);
   }
 
@@ -84,9 +85,9 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
     activityManager.getMemoryInfo(mi);
 
     WritableMap info = Arguments.createMap();
-    info.putDouble("totalMemory", (double)mi.totalMem);
-    info.putDouble("freeMemory", (double)mi.availMem);
-    info.putDouble("usedMemory", (double) mi.totalMem - mi.availMem);
+    info.putDouble("total", (double)mi.totalMem);
+    info.putDouble("free", (double)mi.availMem);
+    info.putDouble("used", (double) mi.totalMem - mi.availMem);
     promise.resolve(info);
   }
 }
