@@ -47,8 +47,8 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
     activityManager.getMemoryInfo(mi);
 
     WritableMap info = Arguments.createMap();
-    info.putDouble("total", (double)mi.totalMem);
-    info.putDouble("free", (double)mi.availMem);
+    info.putDouble("total", (double) mi.totalMem);
+    info.putDouble("free", (double) mi.availMem);
     double usedMemory = (double) (mi.totalMem - mi.availMem);
     info.putDouble("used", usedMemory);
     return info;
