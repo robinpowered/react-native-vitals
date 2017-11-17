@@ -59,13 +59,10 @@ static NSString * const LOW_MEMORY = @"LOW_MEMORY";
 - (void)applicationDidReceiveMemoryWarning:(NSNotification *)notification
 {
     NSDictionary *memoryInfo = [RNVitals getMemoryInfo];
-    if (memoryInfo == nil)
-    {
+    if (memoryInfo == nil) {
         [_bridge.eventDispatcher sendDeviceEventWithName:LOW_MEMORY
                                                     body:@"An error happened while getting memory logs"];
-    }
-    else
-    {
+    } else {
         [_bridge.eventDispatcher sendDeviceEventWithName:LOW_MEMORY
                                                     body:memoryInfo];
     }
@@ -106,12 +103,9 @@ RCT_EXPORT_METHOD(getStorage:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromis
 RCT_EXPORT_METHOD(getMemory:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     NSDictionary *memoryInfo = [RNVitals getMemoryInfo];
-    if (memoryInfo == nil)
-    {
+    if (memoryInfo == nil) {
         reject(@"not-support", @"An error happened", nil);
-    }
-    else
-    {
+    } else {
         resolve(memoryInfo);
     }
 
