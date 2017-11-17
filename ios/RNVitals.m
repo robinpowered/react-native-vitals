@@ -84,7 +84,7 @@ RCT_EXPORT_METHOD(getStorage:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromis
         NSNumber *freeFileSystemSizeInBytes = [dictionary objectForKey:NSFileSystemFreeSize];
         totalSpace = [fileSystemSizeInBytes unsignedLongLongValue];
         totalFreeSpace = [freeFileSystemSizeInBytes unsignedLongLongValue];
-        unsigned long long used = totalFreeSpace - totalSpace;
+        unsigned long long used = totalSpace - totalFreeSpace;
         resolve(@{
                   @"total": [NSNumber numberWithUnsignedLongLong:totalSpace],
                   @"free": [NSNumber numberWithUnsignedLongLong:totalFreeSpace],
