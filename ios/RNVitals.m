@@ -59,13 +59,8 @@ static NSString * const LOW_MEMORY = @"LOW_MEMORY";
 - (void)applicationDidReceiveMemoryWarning:(NSNotification *)notification
 {
     NSDictionary *memoryInfo = [RNVitals getMemoryInfo];
-    if (memoryInfo == nil) {
-        [_bridge.eventDispatcher sendDeviceEventWithName:LOW_MEMORY
-                                                    body:@"An error happened while getting memory logs"];
-    } else {
-        [_bridge.eventDispatcher sendDeviceEventWithName:LOW_MEMORY
-                                                    body:memoryInfo];
-    }
+    [_bridge.eventDispatcher sendDeviceEventWithName:LOW_MEMORY
+                                                body:memoryInfo];
 }
 
 RCT_EXPORT_MODULE()
