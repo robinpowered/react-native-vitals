@@ -36,20 +36,7 @@ static NSString * const LOW_MEMORY = @"LOW_MEMORY";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)applicationDidReceiveMemoryWarning:(NSNotification *)notification
-{
-    [_bridge.eventDispatcher sendDeviceEventWithName:LOW_MEMORY
-                                                body:@YES];
-}
-
-RCT_EXPORT_MODULE()
-
-- (NSDictionary *)constantsToExport
-{
-    return @{ @"LOW_MEMORY": LOW_MEMORY };
-}
-
-- (NSDictionary *)getMemoryInfo
++ (NSDictionary *)getMemoryInfo
 {
     struct mach_task_basic_info info;
     mach_msg_type_number_t size = sizeof(info);
@@ -59,14 +46,36 @@ RCT_EXPORT_MODULE()
                                    &size);
 
     if (kerr != KERN_SUCCESS) {
-        return @{"failed": "failure"};
+        return @{@"failed": @"failure"};
     }
 
     return @{
-      @"total": [NSNumber numberWithUnsignedLongLong:[NSProcessInfo processInfo].physicalMemory],
-      @"used": [NSNumber numberWithUnsignedLongLong:info.resident_size],
-      @"free": [NSNumber numberWithUnsignedLongLong:info.virtual_size]
-    };
+             @"total": [NSNumber numberWithUnsignedLongLong:[NSProcessInfo processInfo].physicalMemory],
+             @"used": [NSNumber numberWithUnsignedLongLong:info.resident_size],
+             @"free": [NSNumber numberWithUnsignedLongLong:info.virtual_size]
+             };
+}
+
+- (void)applicationDidReceiveMemoryWarning:(NSNotification *)notification
+{
+    NSDictionary *memoryInfo = [RNVitals getMemoryInfo];
+    if ([memoryInfo objectForKey:@"failed"] != nil)
+    {
+        [_bridge.eventDispatcher sendDeviceEventWithName:LOW_MEMORY
+                                                    body:@"An error happened while getting memory logs"];
+    }
+    else
+    {
+        [_bridge.eventDispatcher sendDeviceEventWithName:LOW_MEMORY
+                                                    body:memoryInfo];
+    }
+}
+
+RCT_EXPORT_MODULE()
+
+- (NSDictionary *)constantsToExport
+{
+    return @{ @"LOW_MEMORY": LOW_MEMORY };
 }
 
 RCT_EXPORT_METHOD(getStorage:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
@@ -96,14 +105,14 @@ RCT_EXPORT_METHOD(getStorage:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromis
 
 RCT_EXPORT_METHOD(getMemory:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-    NSDictionary memoryInfo = [RNVitals getMemoryInfo];
+    NSDictionary *memoryInfo = [RNVitals getMemoryInfo];
     if ([memoryInfo objectForKey:@"failed"] != nil)
     {
-      reject(@"not-support", @"An error happened", nil);
+        reject(@"not-support", @"An error happened", nil);
     }
     else
     {
-      resolve(memoryInfo);
+        resolve(memoryInfo);
     }
 
 }
