@@ -1,4 +1,3 @@
-
 # react-native-vitals
 
 ## Getting started
@@ -50,4 +49,3 @@ import RNVitals from 'react-native-vitals';
 // TODO: What to do with the module?
 RNVitals;
 ```
-  

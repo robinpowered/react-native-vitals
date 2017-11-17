@@ -1,4 +1,3 @@
-
 package com.reactlibrary;
 
 import android.os.Environment;
@@ -42,7 +41,7 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
     return constants;
   }
 
-  public WritableMap getMemoryInfo() {
+  private WritableMap getMemoryInfo() {
     ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
     ActivityManager activityManager = (ActivityManager) getReactApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
     activityManager.getMemoryInfo(mi);
@@ -50,15 +49,16 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
     WritableMap info = Arguments.createMap();
     info.putDouble("total", (double)mi.totalMem);
     info.putDouble("free", (double)mi.availMem);
-    info.putDouble("used", (double) mi.totalMem - mi.availMem);
+    double usedMemory = (double) (mi.totalMem - mi.availMem);
+    info.putDouble("used", usedMemory);
     return info;
   }
 
   @Override
   public void onLowMemory() {
-    ReactApplicationContext thisContext = getReactApplicationContext();
-    if (thisContext.hasActiveCatalystInstance()) {
-      thisContext
+    ReactApplicationContext context = getReactApplicationContext();
+    if (context.hasActiveCatalystInstance()) {
+      context
         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
         .emit(LOW_MEMORY, getMemoryInfo());
     }
@@ -87,9 +87,11 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
     }
 
     WritableMap info = Arguments.createMap();
-    info.putDouble("total", (double)totalSpace);
-    info.putDouble("free", (double)freeSpace);
-    info.putDouble("used", (double)totalSpace - freeSpace);
+    info.putDouble("total", (double) totalSpace);
+    info.putDouble("free", (double) freeSpace);
+    double usedSpace = (double) (mi.totalSpace - mi.freeSpace);
+    info.putDouble("used", usedSpace);
+
     promise.resolve(info);
   }
 
