@@ -52,13 +52,13 @@ static NSString * const LOW_MEMORY = @"LOW_MEMORY";
 
     return @{
              @"total": @([SSMemoryInfo totalMemory]),
-             @"app-used": [NSNumber numberWithUnsignedLongLong:info.resident_size],
-             @"system-used": @([SSMemoryInfo usedMemory:NO]),
-             @"system-free": @([SSMemoryInfo freeMemory:NO]),
-             @"system-active": @([SSMemoryInfo activeMemory:NO]),
-             @"system-inactive": @([SSMemoryInfo inactiveMemory:NO]),
-             @"system-wired": @([SSMemoryInfo wiredMemory:NO]),
-             @"system-purgable": @([SSMemoryInfo purgableMemory:NO])
+             @"appUsed": [NSNumber numberWithUnsignedLongLong:info.resident_size],
+             @"systemUsed": @([SSMemoryInfo usedMemory:NO]),
+             @"systemFree": @([SSMemoryInfo freeMemory:NO]),
+             @"systemActive": @([SSMemoryInfo activeMemory:NO]),
+             @"systemInactive": @([SSMemoryInfo inactiveMemory:NO]),
+             @"systemWired": @([SSMemoryInfo wiredMemory:NO]),
+             @"systemPurgable": @([SSMemoryInfo purgableMemory:NO])
              };
 }
 
