@@ -1,5 +1,6 @@
 
 #import "RNVitals.h"
+#import "SSMemoryInfo.h"
 #import <mach/mach.h>
 #import <mach/mach_host.h>
 
@@ -104,6 +105,19 @@ RCT_EXPORT_METHOD(getMemory:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
         resolve(memoryInfo);
     }
 
+}
+
+RCT_EXPORT_METHOD(getExtendedMemory:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    resolve(return @{
+             @"total": [SSMemoryInfo totalMemory],
+             @"used": [SSMemoryInfo usedMemory:NO],
+             @"free": [SSMemoryInfo freeMemory:NO],
+             @"active": [SSMemoryInfo activeMemory:NO],
+             @"inactive": [SSMemoryInfo inactiveMemory:NO],
+             @"wired": [SSMemoryInfo wiredMemory:NO],
+             @"purgable": [SSMemoryInfo purgableMemory:NO]
+             });
 }
 
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		909820951FCDB62700A7617D /* SSMemoryInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 909820931FCDB62700A7617D /* SSMemoryInfo.m */; };
 		B3E7B58A1CC2AC0600A0062D /* RNVitals.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNVitals.m */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +25,8 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNVitals.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNVitals.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		909820931FCDB62700A7617D /* SSMemoryInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSMemoryInfo.m; sourceTree = "<group>"; };
+		909820941FCDB62700A7617D /* SSMemoryInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSMemoryInfo.h; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* RNVitals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNVitals.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RNVitals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNVitals.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -51,6 +54,8 @@
 			isa = PBXGroup;
 			children = (
 				B3E7B5881CC2AC0600A0062D /* RNVitals.h */,
+				909820941FCDB62700A7617D /* SSMemoryInfo.h */,
+				909820931FCDB62700A7617D /* SSMemoryInfo.m */,
 				B3E7B5891CC2AC0600A0062D /* RNVitals.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
@@ -112,6 +117,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				909820951FCDB62700A7617D /* SSMemoryInfo.m in Sources */,
 				B3E7B58A1CC2AC0600A0062D /* RNVitals.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -204,7 +210,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-				"$(inherited)",
+					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
