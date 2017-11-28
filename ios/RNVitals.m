@@ -51,9 +51,14 @@ static NSString * const LOW_MEMORY = @"LOW_MEMORY";
     }
 
     return @{
-             @"total": [NSNumber numberWithUnsignedLongLong:[NSProcessInfo processInfo].physicalMemory],
-             @"used": [NSNumber numberWithUnsignedLongLong:info.resident_size],
-             @"free": [NSNumber numberWithUnsignedLongLong:info.virtual_size]
+             @"total": @([SSMemoryInfo totalMemory]),
+             @"app-used": [NSNumber numberWithUnsignedLongLong:info.resident_size],
+             @"system-used": @([SSMemoryInfo usedMemory:NO]),
+             @"system-free": @([SSMemoryInfo freeMemory:NO]),
+             @"system-active": @([SSMemoryInfo activeMemory:NO]),
+             @"system-inactive": @([SSMemoryInfo inactiveMemory:NO]),
+             @"system-wired": @([SSMemoryInfo wiredMemory:NO]),
+             @"system-purgable": @([SSMemoryInfo purgableMemory:NO])
              };
 }
 
@@ -105,19 +110,6 @@ RCT_EXPORT_METHOD(getMemory:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
         resolve(memoryInfo);
     }
 
-}
-
-RCT_EXPORT_METHOD(getExtendedMemory:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-{
-    resolve(return @{
-             @"total": [SSMemoryInfo totalMemory],
-             @"used": [SSMemoryInfo usedMemory:NO],
-             @"free": [SSMemoryInfo freeMemory:NO],
-             @"active": [SSMemoryInfo activeMemory:NO],
-             @"inactive": [SSMemoryInfo inactiveMemory:NO],
-             @"wired": [SSMemoryInfo wiredMemory:NO],
-             @"purgable": [SSMemoryInfo purgableMemory:NO]
-             });
 }
 
 @end
