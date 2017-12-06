@@ -2,6 +2,8 @@ package com.reactlibrary;
 
 import android.os.Environment;
 import android.os.StatFs;
+import android.os.Build;
+import android.os.Debug;
 import android.content.ComponentCallbacks;
 import android.content.res.Configuration;
 import android.app.ActivityManager;
@@ -43,14 +45,24 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
 
   private WritableMap getMemoryInfo() {
     ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
-    ActivityManager activityManager = (ActivityManager) getReactApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+    ActivityManager activityManager = (ActivityManager) getReactApplicationContext()
+        .getSystemService(Context.ACTIVITY_SERVICE);
     activityManager.getMemoryInfo(mi);
+
+    Debug.MemoryInfo memInfo = new Debug.MemoryInfo();
+    Debug.getMemoryInfo(memInfo);
+    long res = memInfo.getTotalPrivateDirty();
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      res += memInfo.getTotalPrivateClean();
+    }
+
+    long appUsed = res * 1024L;
 
     WritableMap info = Arguments.createMap();
     info.putDouble("total", (double) mi.totalMem);
-    info.putDouble("free", (double) mi.availMem);
-    double usedMemory = (double) (mi.totalMem - mi.availMem);
-    info.putDouble("used", usedMemory);
+    info.putDouble("appUsed", appUsed);
+    info.putDouble("systemFree", (double) mi.availMem);
     return info;
   }
 
@@ -58,9 +70,7 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
   public void onLowMemory() {
     ReactApplicationContext context = getReactApplicationContext();
     if (context.hasActiveCatalystInstance()) {
-      context
-        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-        .emit(LOW_MEMORY, getMemoryInfo());
+      context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(LOW_MEMORY, getMemoryInfo());
     }
   }
 
@@ -77,7 +87,7 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
     long totalSpace;
     long freeSpace;
 
-    if (android.os.Build.VERSION.SDK_INT >= 18) {
+    if (Build.VERSION.SDK_INT >= 18) {
       totalSpace = stat.getTotalBytes();
       freeSpace = stat.getFreeBytes();
     } else {
@@ -89,7 +99,7 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
     WritableMap info = Arguments.createMap();
     info.putDouble("total", (double) totalSpace);
     info.putDouble("free", (double) freeSpace);
-    double usedSpace = (double) (mi.totalSpace - mi.freeSpace);
+    double usedSpace = (double) (totalSpace - freeSpace);
     info.putDouble("used", usedSpace);
 
     promise.resolve(info);
