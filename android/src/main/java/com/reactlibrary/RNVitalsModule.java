@@ -57,6 +57,7 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
     info.putDouble("total", (double) mi.totalMem / 1024 / 1024);
     info.putDouble("appUsed", (double) appUsed / 1024 / 1024);
     info.putDouble("systemFree", (double) mi.availMem / 1024 / 1024);
+    info.putDouble("systemUsed", (double) (mi.totalMem - mi.availMem) / 1024 / 1024);
     return info;
   }
 
