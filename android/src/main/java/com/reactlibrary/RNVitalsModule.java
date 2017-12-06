@@ -51,18 +51,12 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
 
     Debug.MemoryInfo memInfo = new Debug.MemoryInfo();
     Debug.getMemoryInfo(memInfo);
-    long res = memInfo.getTotalPrivateDirty();
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-      res += memInfo.getTotalPrivateClean();
-    }
-
-    long appUsed = res * 1024L;
+    long appUsed = memInfo.getTotalPss() * 1024L;
 
     WritableMap info = Arguments.createMap();
-    info.putDouble("total", (double) mi.totalMem);
-    info.putDouble("appUsed", appUsed);
-    info.putDouble("systemFree", (double) mi.availMem);
+    info.putDouble("total", (double) mi.totalMem / 1024 / 1024);
+    info.putDouble("appUsed", (double) appUsed / 1024 / 1024);
+    info.putDouble("systemFree", (double) mi.availMem / 1024 / 1024);
     return info;
   }
 
