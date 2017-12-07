@@ -9,7 +9,7 @@ const {RNVitals} = NativeModules;
 
 export default {
   ...RNVitals,
-  addListener (callback) {
+  addLowMemoryListener (callback) {
     return DeviceEventEmitter.addListener(
       RNVitals.LOW_MEMORY,
       callback
