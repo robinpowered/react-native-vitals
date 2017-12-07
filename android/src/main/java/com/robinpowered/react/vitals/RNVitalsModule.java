@@ -29,7 +29,6 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
 
   public RNVitalsModule(ReactApplicationContext reactContext) {
     super(reactContext);
-    reactContext.registerComponentCallbacks(this);
   }
 
   private double toMB(long num) {
