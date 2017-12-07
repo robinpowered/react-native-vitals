@@ -50,9 +50,11 @@ static NSString * const LOW_MEMORY = @"LOW_MEMORY";
         return nil;
     }
 
+    double appUsed = (double) info.resident_size / 1024 / 1024;
+
     return @{
-             @"total": @([SSMemoryInfo totalMemory]),
-             @"appUsed": [NSNumber numberWithUnsignedLongLong:info.resident_size],
+             @"systemTotal": @([SSMemoryInfo totalMemory]),
+             @"appUsed": @(appUsed),
              @"systemUsed": @([SSMemoryInfo usedMemory:NO]),
              @"systemFree": @([SSMemoryInfo freeMemory:NO]),
              @"systemActive": @([SSMemoryInfo activeMemory:NO]),
@@ -90,11 +92,11 @@ RCT_EXPORT_METHOD(getStorage:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromis
         NSNumber *freeFileSystemSizeInBytes = [dictionary objectForKey:NSFileSystemFreeSize];
         totalSpace = [fileSystemSizeInBytes unsignedLongLongValue];
         totalFreeSpace = [freeFileSystemSizeInBytes unsignedLongLongValue];
-        unsigned long long used = totalSpace - totalFreeSpace;
+        double used = (double) totalSpace - totalFreeSpace;
         resolve(@{
-                  @"total": [NSNumber numberWithUnsignedLongLong:totalSpace],
-                  @"free": [NSNumber numberWithUnsignedLongLong:totalFreeSpace],
-                  @"used": [NSNumber numberWithUnsignedLongLong:used]
+                  @"total": @((double) totalSpace / 1024 / 1024),
+                  @"free": @((double) totalFreeSpace / 1024 / 1024),
+                  @"used": @(used / 1024 / 1024)
                   });
     } else {
         reject(@"not-support", @"An error happened", nil);
