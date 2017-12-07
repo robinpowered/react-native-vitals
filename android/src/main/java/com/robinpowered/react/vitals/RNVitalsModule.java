@@ -29,10 +29,11 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
 
   public RNVitalsModule(ReactApplicationContext reactContext) {
     super(reactContext);
+    reactContext.registerComponentCallbacks(this);
   }
 
   private double toMB(long num) {
-    return (double) num / 1024 / 1024;
+    return (double) (num / 1024 / 1024);
   }
 
   @Override
