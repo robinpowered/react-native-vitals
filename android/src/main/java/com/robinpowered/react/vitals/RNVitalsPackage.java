@@ -1,4 +1,4 @@
-package com.robinpowered.react.battery;
+package com.robinpowered.react.vitals;
 
 import java.util.Arrays;
 import java.util.Collections;

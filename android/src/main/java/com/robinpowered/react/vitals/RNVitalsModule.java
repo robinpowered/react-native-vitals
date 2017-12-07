@@ -1,4 +1,4 @@
-package com.robinpowered.react.battery;
+package com.robinpowered.react.vitals;
 
 import android.os.Environment;
 import android.os.StatFs;
