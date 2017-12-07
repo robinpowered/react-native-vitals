@@ -31,6 +31,10 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
     super(reactContext);
   }
 
+  private double toMB(long num) {
+    return (double) num / 1024 / 1024;
+  }
+
   @Override
   public String getName() {
     return MODULE_NAME;
@@ -54,10 +58,10 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
     long appUsed = memInfo.getTotalPss() * 1024L;
 
     WritableMap info = Arguments.createMap();
-    info.putDouble("total", (double) mi.totalMem / 1024 / 1024);
-    info.putDouble("appUsed", (double) appUsed / 1024 / 1024);
-    info.putDouble("systemFree", (double) mi.availMem / 1024 / 1024);
-    info.putDouble("systemUsed", (double) (mi.totalMem - mi.availMem) / 1024 / 1024);
+    info.putDouble("systemTotal", toMB(mi.totalMem));
+    info.putDouble("appUsed", toMB(appUsed));
+    info.putDouble("systemFree", toMB(mi.availMem));
+    info.putDouble("systemUsed", toMB(mi.totalMem - mi.availMem));
     return info;
   }
 
@@ -92,10 +96,10 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
     }
 
     WritableMap info = Arguments.createMap();
-    info.putDouble("total", (double) totalSpace);
-    info.putDouble("free", (double) freeSpace);
-    double usedSpace = (double) (totalSpace - freeSpace);
-    info.putDouble("used", usedSpace);
+    info.putDouble("total", toMB(totalSpace));
+    info.putDouble("free", toMB(freeSpace));
+    long usedSpace = totalSpace - freeSpace;
+    info.putDouble("used", toMB(usedSpace));
 
     promise.resolve(info);
   }
