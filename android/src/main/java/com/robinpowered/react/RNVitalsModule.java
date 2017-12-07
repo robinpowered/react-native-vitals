@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package com.robinpowered.react.battery;
 
 import android.os.Environment;
 import android.os.StatFs;
