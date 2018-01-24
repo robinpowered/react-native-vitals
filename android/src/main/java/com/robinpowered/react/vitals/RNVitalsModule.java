@@ -4,7 +4,7 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.os.Build;
 import android.os.Debug;
-import android.content.ComponentCallbacks;
+import android.content.ComponentCallbacks2;
 import android.content.res.Configuration;
 import android.app.ActivityManager;
 import android.content.Context;
