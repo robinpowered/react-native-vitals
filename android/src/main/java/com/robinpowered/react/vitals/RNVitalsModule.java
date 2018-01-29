@@ -75,6 +75,11 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
   }
 
   @Override
+  public void onLowMemory() {
+    // no-op
+  }
+
+  @Override
   public void initialize() {
     getReactApplicationContext().addLifecycleEventListener(this);
     getReactApplicationContext().registerComponentCallbacks(this);
