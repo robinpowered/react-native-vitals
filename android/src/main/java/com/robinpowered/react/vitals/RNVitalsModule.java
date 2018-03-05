@@ -98,6 +98,7 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
   @Override
   public void onHostDestroy() {
     getReactApplicationContext().unregisterComponentCallbacks(this);
+    getReactApplicationContext().removeLifecycleEventListener(this);
   }
 
   @Override
