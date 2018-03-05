@@ -1,13 +1,15 @@
 {
   "name": "react-native-vitals",
   "version": "1.0.0",
-  "description": "",
+  "description": "Memory and resource information Native Module for React Native",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "react-native"
+    "react-native",
+    "memory",
+    "storage"
   ],
   "author": "Ying Hang Eng",
   "license": "MIT",
