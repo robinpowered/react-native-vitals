@@ -4,11 +4,12 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.os.Build;
 import android.os.Debug;
-import android.content.ComponentCallbacks;
+import android.content.ComponentCallbacks2;
 import android.content.res.Configuration;
 import android.app.ActivityManager;
 import android.content.Context;
 
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -22,7 +23,7 @@ import javax.annotation.Nullable;
 
 import java.io.File;
 
-public class RNVitalsModule extends ReactContextBaseJavaModule implements ComponentCallbacks {
+public class RNVitalsModule extends ReactContextBaseJavaModule implements ComponentCallbacks2, LifecycleEventListener {
 
   public static final String MODULE_NAME = "RNVitals";
   public static final String LOW_MEMORY = "LOW_MEMORY";
@@ -66,11 +67,38 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
   }
 
   @Override
-  public void onLowMemory() {
+  public void onTrimMemory(int level) {
     ReactApplicationContext context = getReactApplicationContext();
     if (context.hasActiveCatalystInstance()) {
       context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(LOW_MEMORY, getMemoryInfo());
     }
+  }
+
+  @Override
+  public void onLowMemory() {
+    // no-op
+  }
+
+  @Override
+  public void initialize() {
+    getReactApplicationContext().addLifecycleEventListener(this);
+    getReactApplicationContext().registerComponentCallbacks(this);
+  }
+
+  @Override
+  public void onHostResume() {
+    getReactApplicationContext().registerComponentCallbacks(this);
+  }
+
+  @Override
+  public void onHostPause() {
+    getReactApplicationContext().unregisterComponentCallbacks(this);
+  }
+
+  @Override
+  public void onHostDestroy() {
+    getReactApplicationContext().unregisterComponentCallbacks(this);
+    getReactApplicationContext().removeLifecycleEventListener(this);
   }
 
   @Override
