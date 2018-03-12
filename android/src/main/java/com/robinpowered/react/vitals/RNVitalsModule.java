@@ -27,7 +27,7 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
 
   public static final String MODULE_NAME = "RNVitals";
   public static final String LOW_MEMORY = "LOW_MEMORY";
-  public static final String MEMORY_LEVEL = "MEMORY_LEVEL";
+  public static final String MEMORY_LEVEL_KEY = "MemoryLevel";
 
   public static final int MEMORY_MODERATE = TRIM_MEMORY_RUNNING_MODERATE;
   public static final int MEMORY_LOW = TRIM_MEMORY_RUNNING_LOW;
@@ -50,13 +50,13 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
   @Override
   public @Nullable Map<String, Object> getConstants() {
     HashMap<String, Object> memoryLevelConstants = new HashMap<String, Object>();
-    memoryLevelConstants.put("MEMORY_CRITICAL", MEMORY_CRITICAL);
-    memoryLevelConstants.put("MEMORY_LOW", MEMORY_LOW);
-    memoryLevelConstants.put("MEMORY_MODERATE", MEMORY_MODERATE);
+    memoryLevelConstants.put("CRITICAL", MEMORY_CRITICAL);
+    memoryLevelConstants.put("LOW", MEMORY_LOW);
+    memoryLevelConstants.put("MODERATE", MEMORY_MODERATE);
 
     HashMap<String, Object> constants = new HashMap<String, Object>();
     constants.put(LOW_MEMORY, LOW_MEMORY);
-    constants.put(MEMORY_LEVEL, memoryLevelConstants);
+    constants.put(MEMORY_LEVEL_KEY, memoryLevelConstants);
 
     return constants;
   }
