@@ -7,8 +7,8 @@ export default {
   ...Vitals,
   // Android overrides
   addLowMemoryListener(callback) {
-    var wrappedCallback = function (memoryInfo) {
-      if (memoryInfo.memoryLevel === Vitals.MEMORY_CRITICAL) {
+    const wrappedCallback = memoryInfo => {
+      if (memoryInfo.memoryLevel === Vitals.MEMORY_LEVEL.MEMORY_CRITICAL) {
         callback(memoryInfo);
       }
     };
