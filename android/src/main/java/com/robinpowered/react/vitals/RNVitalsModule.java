@@ -70,7 +70,9 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
   public void onTrimMemory(int level) {
     ReactApplicationContext context = getReactApplicationContext();
     if (context.hasActiveCatalystInstance()) {
-      context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(LOW_MEMORY, getMemoryInfo());
+      WritableMap memoryInfo = getMemoryInfo();
+      memoryInfo.putInt("memoryLevel", level);
+      context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(LOW_MEMORY, memoryInfo);
     }
   }
 
