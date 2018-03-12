@@ -27,6 +27,12 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
 
   public static final String MODULE_NAME = "RNVitals";
   public static final String LOW_MEMORY = "LOW_MEMORY";
+  public static final String MEMORY_LEVEL_KEY = "MemoryLevel";
+
+  public static final int MEMORY_MODERATE = TRIM_MEMORY_RUNNING_MODERATE;
+  public static final int MEMORY_LOW = TRIM_MEMORY_RUNNING_LOW;
+  public static final int MEMORY_CRITICAL = TRIM_MEMORY_RUNNING_CRITICAL;
+
 
   public RNVitalsModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -43,8 +49,15 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
 
   @Override
   public @Nullable Map<String, Object> getConstants() {
+    HashMap<String, Object> memoryLevelConstants = new HashMap<String, Object>();
+    memoryLevelConstants.put("CRITICAL", MEMORY_CRITICAL);
+    memoryLevelConstants.put("LOW", MEMORY_LOW);
+    memoryLevelConstants.put("MODERATE", MEMORY_MODERATE);
+
     HashMap<String, Object> constants = new HashMap<String, Object>();
-    constants.put("LOW_MEMORY", LOW_MEMORY);
+    constants.put(LOW_MEMORY, LOW_MEMORY);
+    constants.put(MEMORY_LEVEL_KEY, memoryLevelConstants);
+
     return constants;
   }
 
@@ -70,7 +83,9 @@ public class RNVitalsModule extends ReactContextBaseJavaModule implements Compon
   public void onTrimMemory(int level) {
     ReactApplicationContext context = getReactApplicationContext();
     if (context.hasActiveCatalystInstance()) {
-      context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(LOW_MEMORY, getMemoryInfo());
+      WritableMap memoryInfo = getMemoryInfo();
+      memoryInfo.putInt("memoryLevel", level);
+      context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(LOW_MEMORY, memoryInfo);
     }
   }
 
