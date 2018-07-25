@@ -1,5 +1,7 @@
 # react-native-vitals
 
+React Native package that provides memory/storage usage info of a device.
+
 ## Getting started
 
 `$ npm install react-native-vitals --save`
@@ -16,12 +18,12 @@
 1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
 2. Go to `node_modules` ➜ `react-native-vitals` and add `RNVitals.xcodeproj`
 3. In XCode, in the project navigator, select your project. Add `libRNVitals.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-4. Run your project (`Cmd+R`)<
+4. Run your project (`Cmd+R`)
 
 #### Android
 
 1. Open up `android/app/src/main/java/[...]/MainActivity.java`
-  - Add `import com.reactlibrary.RNVitalsPackage;` to the imports at the top of the file
+  - Add `import com.robinpowered.react.vitals.RNVitalsPackage;` to the imports at the top of the file
   - Add `new RNVitalsPackage()` to the list returned by the `getPackages()` method
 2. Append the following lines to `android/settings.gradle`:
   	```
@@ -33,19 +35,34 @@
       compile project(':react-native-vitals')
   	```
 
-#### Windows
-[Read it! :D](https://github.com/ReactWindows/react-native)
-
-1. In Visual Studio add the `RNVitals.sln` in `node_modules/react-native-vitals/windows/RNVitals.sln` folder to their solution, reference from their app.
-2. Open up your `MainPage.cs` app
-  - Add `using Vitals.RNVitals;` to the usings at the top of the file
-  - Add `new RNVitalsPackage()` to the `List<IReactPackage>` returned by the `Packages` method
-
-
 ## Usage
 ```javascript
-import RNVitals from 'react-native-vitals';
+import Vitals from 'react-native-vitals';
 
-// TODO: What to do with the module?
-RNVitals;
+Vitals.getMemory(memory => {
+  var {
+    appUsed,
+    systemTotal,
+    systemFree,
+    systemUsed
+  } = memory;
+});
+
+Vitals.getStorage(storage => {
+  var {
+    total,
+    free,
+    used
+  } = storage;
+});
+
+Vitals.addLowMemoryListener(memory => {
+  console.log('Low memory warning triggered');
+  var {
+    appUsed,
+    systemTotal,
+    systemFree,
+    systemUsed
+  } = memory;
+})
 ```
