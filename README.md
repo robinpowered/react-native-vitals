@@ -2,6 +2,38 @@
 
 React Native package that provides memory/storage usage info of a device.
 
+## Usage
+```javascript
+import Vitals from 'react-native-vitals';
+
+Vitals.getMemory(memory => {
+  var {
+    appUsed,
+    systemTotal,
+    systemFree,
+    systemUsed
+  } = memory;
+});
+
+Vitals.getStorage(storage => {
+  var {
+    total,
+    free,
+    used
+  } = storage;
+});
+
+Vitals.addLowMemoryListener(memory => {
+  console.log('Low memory warning triggered');
+  var {
+    appUsed,
+    systemTotal,
+    systemFree,
+    systemUsed
+  } = memory;
+})
+```
+
 ## Getting started
 
 `$ npm install react-native-vitals --save`
@@ -34,35 +66,3 @@ React Native package that provides memory/storage usage info of a device.
   	```
       compile project(':react-native-vitals')
   	```
-
-## Usage
-```javascript
-import Vitals from 'react-native-vitals';
-
-Vitals.getMemory(memory => {
-  var {
-    appUsed,
-    systemTotal,
-    systemFree,
-    systemUsed
-  } = memory;
-});
-
-Vitals.getStorage(storage => {
-  var {
-    total,
-    free,
-    used
-  } = storage;
-});
-
-Vitals.addLowMemoryListener(memory => {
-  console.log('Low memory warning triggered');
-  var {
-    appUsed,
-    systemTotal,
-    systemFree,
-    systemUsed
-  } = memory;
-})
-```
