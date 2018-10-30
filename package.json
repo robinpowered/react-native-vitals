@@ -11,8 +11,17 @@
     "memory",
     "storage"
   ],
-  "author": "Ying Hang Eng",
+  "author": {
+    "name" : "Ying Hang Eng",
+    "email" : "b@rubble.com",
+    "url" : "http://yinghang.me/"
+  },
   "license": "MIT",
+  "homepage": "https://github.com/robinpowered/react-native-vitals",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/robinpowered/react-native-vitals.git"
+  },
   "devDependencies": {
     "react-native": ">=0.27"
   },
