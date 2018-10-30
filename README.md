@@ -52,6 +52,15 @@ Vitals.addLowMemoryListener(memory => {
 3. In XCode, in the project navigator, select your project. Add `libRNVitals.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
 4. Run your project (`Cmd+R`)
 
+#### iOS (using [CocoaPods](https://cocoapods.org/))
+
+Alternatively, you can use CocoaPods to manage your native dependencies, just add this inside your `Podfile`:
+```
+  pod 'RNVitals', :path => '../node_modules/react-native-vitals'
+```
+
+After adding this, you need to run `pod install` inside the `ios`-folder of your RN application.
+
 #### Android
 
 1. Open up `android/app/src/main/java/[...]/MainActivity.java`
