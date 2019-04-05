@@ -37,6 +37,11 @@ static NSString * const LOW_MEMORY = @"LOW_MEMORY";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+    return YES;
+}
+
 + (NSDictionary *)getMemoryInfo
 {
     struct mach_task_basic_info info;
