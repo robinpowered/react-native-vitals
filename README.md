@@ -56,7 +56,7 @@ Vitals.addLowMemoryListener(memory => {
 
 Alternatively, you can use CocoaPods to manage your native dependencies, just add this inside your `Podfile`:
 ```
-  pod 'RNVitals', :path => '../node_modules/react-native-vitals'
+  pod 'react-native-vitals', :path => '../node_modules/react-native-vitals'
 ```
 
 After adding this, you need to run `pod install` inside the `ios`-folder of your RN application.
