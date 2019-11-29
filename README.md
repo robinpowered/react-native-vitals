@@ -6,7 +6,7 @@ React Native package that provides memory/storage usage info of a device.
 ```javascript
 import Vitals from 'react-native-vitals';
 
-Vitals.getMemory(memory => {
+Vitals.getMemory().then(memory => {
   var {
     appUsed,
     systemTotal,
@@ -15,7 +15,7 @@ Vitals.getMemory(memory => {
   } = memory;
 });
 
-Vitals.getStorage(storage => {
+Vitals.getStorage().then(storage => {
   var {
     total,
     free,
